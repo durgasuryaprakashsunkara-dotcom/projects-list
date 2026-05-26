@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusGo - Book Your Bus Ticket</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">🚌 BusGo</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="pages/routes.html">Routes</a>
+            <a href="pages/bookings.html">My Bookings</a>
+            <a href="pages/contact.html">Contact</a>
+            <a href="pages/login.html">Login</a>
+        </div>
+        <button id="darkToggle" onclick="toggleDark()">🌙 Dark Mode</button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Book Your Bus Ticket</h1>
+            <p>Fast, reliable, and affordable intercity travel</p>
+            <div class="search-box">
+                <input type="text" placeholder="From — e.g. Vijayawada" id="fromCity">
+                <input type="text" placeholder="To — e.g. Hyderabad" id="toCity">
+                <input type="date" id="travelDate">
+                <select id="passengers">
+                    <option>1 Passenger</option>
+                    <option>2 Passengers</option>
+                    <option>3 Passengers</option>
+                    <option>4 Passengers</option>
+                </select>
+                <button class="search-btn" onclick="searchBuses()">🔍 Search Buses</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUS LISTINGS -->
+    <h2 class="section-title">Available Buses</h2>
+    <div class="bus-container" id="busContainer">
+
+        <div class="bus-card">
+            <h3>KPN Travels</h3>
+            <div class="bus-info">
+                <p>🕗 06:00 AM → 10:30 AM</p>
+                <p>⏱ Duration: 4h 30min</p>
+                <p>💺 AC Sleeper</p>
+                <p>🪑 24 seats available</p>
+            </div>
+            <p class="price">₹350 <span style="font-size:14px;font-weight:400;color:#888">/ seat</span></p>
+            <button class="book-btn" onclick="location.href='pages/seat-booking.html?bus=KPN'">Book Now</button>
+        </div>
+
+        <div class="bus-card">
+            <h3>APSRTC Express</h3>
+            <div class="bus-info">
+                <p>🕘 08:30 AM → 01:15 PM</p>
+                <p>⏱ Duration: 4h 45min</p>
+                <p>💺 Non-AC Seater</p>
+                <p>🪑 11 seats available</p>
+            </div>
+            <p class="price">₹210 <span style="font-size:14px;font-weight:400;color:#888">/ seat</span></p>
+            <button class="book-btn" onclick="location.href='pages/seat-booking.html?bus=APSRTC'">Book Now</button>
+        </div>
+
+        <div class="bus-card">
+            <h3>Orange Tours</h3>
+            <div class="bus-info">
+                <p>🕙 10:00 PM → 02:30 AM</p>
+                <p>⏱ Duration: 4h 30min</p>
+                <p>💺 Luxury Sleeper</p>
+                <p>🪑 6 seats available</p>
+            </div>
+            <p class="price">₹520 <span style="font-size:14px;font-weight:400;color:#888">/ seat</span></p>
+            <button class="book-btn" onclick="location.href='pages/seat-booking.html?bus=Orange'">Book Now</button>
+        </div>
+
+        <div class="bus-card">
+            <h3>Greenline Travels</h3>
+            <div class="bus-info">
+                <p>🕑 02:00 PM → 06:45 PM</p>
+                <p>⏱ Duration: 4h 45min</p>
+                <p>💺 AC Seater</p>
+                <p>🪑 18 seats available</p>
+            </div>
+            <p class="price">₹290 <span style="font-size:14px;font-weight:400;color:#888">/ seat</span></p>
+            <button class="book-btn" onclick="location.href='pages/seat-booking.html?bus=Greenline'">Book Now</button>
+        </div>
+
+        <div class="bus-card">
+            <h3>Patel Travels</h3>
+            <div class="bus-info">
+                <p>🕔 04:00 PM → 09:00 PM</p>
+                <p>⏱ Duration: 5h 00min</p>
+                <p>💺 Semi-Sleeper</p>
+                <p>🪑 30 seats available</p>
+            </div>
+            <p class="price">₹275 <span style="font-size:14px;font-weight:400;color:#888">/ seat</span></p>
+            <button class="book-btn" onclick="location.href='pages/seat-booking.html?bus=Patel'">Book Now</button>
+        </div>
+
+        <div class="bus-card">
+            <h3>VRL Travels</h3>
+            <div class="bus-info">
+                <p>🕛 12:00 AM → 04:30 AM</p>
+                <p>⏱ Duration: 4h 30min</p>
+                <p>💺 AC Sleeper</p>
+                <p>🪑 9 seats available</p>
+            </div>
+            <p class="price">₹410 <span style="font-size:14px;font-weight:400;color:#888">/ seat</span></p>
+            <button class="book-btn" onclick="location.href='pages/seat-booking.html?bus=VRL'">Book Now</button>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div>
+                <h3>BusGo</h3>
+                <p>Your trusted intercity bus booking platform. Travel smart, travel safe.</p>
+                <div class="social-icons">
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a><br>
+                <a href="pages/routes.html">Routes</a><br>
+                <a href="pages/bookings.html">My Bookings</a><br>
+                <a href="pages/contact.html">Contact</a>
+            </div>
+            <div>
+                <h3>Contact Us</h3>
+                <p>📧 support@busgo.in</p>
+                <p>📞 1800-123-4567</p>
+                <p>🕐 Mon–Sat, 8 AM – 8 PM</p>
+            </div>
+        </div>
+        <p style="text-align:center;margin-top:30px;color:#aaa;font-size:13px;">© 2025 BusGo. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

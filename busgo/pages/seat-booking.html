@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats — BusGo</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="../index.html" class="logo">🚌 BusGo</a>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="routes.html">Routes</a>
+            <a href="bookings.html">My Bookings</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </div>
+        <button id="darkToggle" onclick="toggleDark()">🌙 Dark Mode</button>
+    </nav>
+
+    <div class="page-header">
+        <h1>Select Your Seats</h1>
+        <p id="busName">Loading bus details...</p>
+    </div>
+
+    <section class="seat-section">
+        <h2 style="text-align:center;">Seat Layout</h2>
+
+        <div class="legend">
+            <span><span class="dot" style="background:#ccc;border:1px solid #aaa"></span> Available</span>
+            <span><span class="dot" style="background:#28a745"></span> Selected</span>
+            <span><span class="dot" style="background:#dc3545"></span> Booked</span>
+        </div>
+
+        <div class="seat-layout" id="seatLayout"></div>
+
+        <p class="total" id="totalAmount">No seats selected</p>
+        <button class="confirm-btn" onclick="confirmBooking()">✅ Confirm Booking</button>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div>
+                <h3>BusGo</h3>
+                <p>Your trusted intercity bus booking platform.</p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="routes.html">Routes</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div>
+                <h3>Contact Us</h3>
+                <p>📧 support@busgo.in</p>
+                <p>📞 1800-123-4567</p>
+            </div>
+        </div>
+        <p style="text-align:center;margin-top:20px;color:#aaa;font-size:13px;">© 2025 BusGo. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const bus = params.get('bus') || 'Bus';
+        const prices = { KPN: 350, APSRTC: 210, Orange: 520, Greenline: 290, Patel: 275, VRL: 410 };
+        const price = prices[bus] || 350;
+        document.getElementById('busName').textContent = `${bus} Travels — ₹${price} per seat`;
+        initSeats(20, price);
+    </script>
+</body>
+</html>
