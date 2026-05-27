@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptChat — Encrypted Messaging UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- CryptChat CSS -->
+  <link rel="stylesheet" href="cryptchat.css" />
+
+  <style>
+    /* Avatar gradient helpers */
+    .av-1 { background: linear-gradient(135deg,#00e5ff,#4f8ef7); }
+    .av-2 { background: linear-gradient(135deg,#a855f7,#4f8ef7); }
+    .av-3 { background: linear-gradient(135deg,#10d9a0,#4f8ef7); }
+    .av-4 { background: linear-gradient(135deg,#f43f5e,#a855f7); }
+    .av-5 { background: linear-gradient(135deg,#f59e0b,#f43f5e); }
+
+    /* Demo tab switcher (login / signup / chat views) */
+    .demo-nav {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      display: flex;
+      gap: 6px;
+      background: rgba(7,13,26,0.88);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 6px;
+      border-radius: 9999px;
+      backdrop-filter: blur(16px);
+    }
+    .demo-nav__btn {
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: none;
+      background: transparent;
+      color: #8ba3c8;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.24s ease;
+      letter-spacing: 0.3px;
+    }
+    .demo-nav__btn.active {
+      background: linear-gradient(135deg,#00e5ff,#4f8ef7);
+      color: #070d1a;
+    }
+
+    /* Page sections */
+    .cc-page { display: none; }
+    .cc-page.active { display: flex; }
+    #page-login  { min-height: 100vh; }
+    #page-signup { min-height: 100vh; }
+    #page-chat   { height: 100vh; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     ANIMATED BACKGROUND
+═══════════════════════════════════════════════════ -->
+<div class="cc-bg" aria-hidden="true">
+  <canvas class="cc-particles" id="particleCanvas"></canvas>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     DEMO NAV (view switcher)
+═══════════════════════════════════════════════════ -->
+<nav class="demo-nav" aria-label="Demo views">
+  <button class="demo-nav__btn active" data-view="page-login">Login</button>
+  <button class="demo-nav__btn"        data-view="page-signup">Sign Up</button>
+  <button class="demo-nav__btn"        data-view="page-chat">Chat App</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: LOGIN
+═══════════════════════════════════════════════════ -->
+<section id="page-login" class="cc-page cc-auth active" aria-label="Login page">
+  <div class="cc-auth__card">
+    <div class="cc-auth__logo-wrap">
+      <div class="cc-auth__icon" aria-hidden="true"><i class="bi bi-shield-lock-fill"></i></div>
+      <h1 class="cc-auth__heading">Welcome back</h1>
+      <p class="cc-auth__subheading">Sign in to your encrypted vault</p>
+    </div>
+
+    <div class="cc-field">
+      <label class="cc-field__label" for="login-email">Email address</label>
+      <div class="cc-field__wrap">
+        <i class="bi bi-envelope cc-field__icon" aria-hidden="true"></i>
+        <input id="login-email" class="cc-field__input" type="email" placeholder="you@cryptchat.io" autocomplete="email" />
+      </div>
+    </div>
+
+    <div class="cc-field">
+      <label class="cc-field__label" for="login-pass">Password</label>
+      <div class="cc-field__wrap">
+        <i class="bi bi-lock cc-field__icon" aria-hidden="true"></i>
+        <input id="login-pass" class="cc-field__input" type="password" placeholder="••••••••••••" autocomplete="current-password" />
+        <button class="cc-field__toggle" aria-label="Toggle password visibility" onclick="togglePass('login-pass', this)">
+          <i class="bi bi-eye" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3" style="font-size:12px;">
+      <label style="display:flex;align-items:center;gap:8px;color:var(--text-secondary);cursor:pointer;">
+        <input type="checkbox" class="cc-toggle" /> Remember me
+      </label>
+      <a href="#" style="color:var(--cyan);font-size:12px;font-weight:600;">Forgot password?</a>
+    </div>
+
+    <button class="cc-btn-primary mb-3" onclick="showView('page-chat')">
+      <i class="bi bi-shield-check" aria-hidden="true"></i> Sign in securely
+    </button>
+
+    <div class="cc-auth__divider"><span>or continue with</span></div>
+
+    <div class="d-flex gap-2 mb-3">
+      <button class="cc-btn-ghost" style="flex:1;font-size:12px;">
+        <i class="bi bi-google" aria-hidden="true"></i> Google
+      </button>
+      <button class="cc-btn-ghost" style="flex:1;font-size:12px;">
+        <i class="bi bi-github" aria-hidden="true"></i> GitHub
+      </button>
+    </div>
+
+    <p class="cc-auth__footer">
+      No account? <a href="#" onclick="showView('page-signup');return false;">Create one free</a>
+    </p>
+
+    <p class="cc-auth__secure">
+      <i class="bi bi-shield-lock" aria-hidden="true"></i>
+      End-to-end encrypted &bull; Zero knowledge &bull; Open source
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: SIGN UP
+═══════════════════════════════════════════════════ -->
+<section id="page-signup" class="cc-page cc-auth" aria-label="Sign up page">
+  <div class="cc-auth__card">
+    <div class="cc-auth__logo-wrap">
+      <div class="cc-auth__icon" aria-hidden="true"><i class="bi bi-person-plus-fill"></i></div>
+      <h1 class="cc-auth__heading">Create your vault</h1>
+      <p class="cc-auth__subheading">Secure messaging starts here</p>
+    </div>
+
+    <div class="row g-2 mb-0">
+      <div class="col-6">
+        <div class="cc-field">
+          <label class="cc-field__label" for="su-first">First name</label>
+          <div class="cc-field__wrap">
+            <i class="bi bi-person cc-field__icon" aria-hidden="true"></i>
+            <input id="su-first" class="cc-field__input" type="text" placeholder="Alex" />
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="cc-field">
+          <label class="cc-field__label" for="su-last">Last name</label>
+          <div class="cc-field__wrap">
+            <i class="bi bi-person cc-field__icon" aria-hidden="true"></i>
+            <input id="su-last" class="cc-field__input" type="text" placeholder="Cipher" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cc-field">
+      <label class="cc-field__label" for="su-email">Email address</label>
+      <div class="cc-field__wrap">
+        <i class="bi bi-envelope cc-field__icon" aria-hidden="true"></i>
+        <input id="su-email" class="cc-field__input" type="email" placeholder="you@cryptchat.io" />
+      </div>
+    </div>
+
+    <div class="cc-field">
+      <label class="cc-field__label" for="su-pass">Password</label>
+      <div class="cc-field__wrap">
+        <i class="bi bi-lock cc-field__icon" aria-hidden="true"></i>
+        <input id="su-pass" class="cc-field__input" type="password" placeholder="Min 12 characters" />
+        <button class="cc-field__toggle" aria-label="Toggle password" onclick="togglePass('su-pass', this)">
+          <i class="bi bi-eye" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Password strength bar -->
+    <div style="margin:-8px 0 16px;">
+      <div style="display:flex;gap:4px;margin-bottom:4px;">
+        <div id="str-1" style="flex:1;height:3px;border-radius:9999px;background:var(--border-dim);transition:background 0.3s;"></div>
+        <div id="str-2" style="flex:1;height:3px;border-radius:9999px;background:var(--border-dim);transition:background 0.3s;"></div>
+        <div id="str-3" style="flex:1;height:3px;border-radius:9999px;background:var(--border-dim);transition:background 0.3s;"></div>
+        <div id="str-4" style="flex:1;height:3px;border-radius:9999px;background:var(--border-dim);transition:background 0.3s;"></div>
+      </div>
+      <span id="str-label" style="font-size:11px;color:var(--text-muted);">Password strength</span>
+    </div>
+
+    <div class="cc-field">
+      <label class="cc-field__label" for="su-confirm">Confirm password</label>
+      <div class="cc-field__wrap">
+        <i class="bi bi-shield-lock cc-field__icon" aria-hidden="true"></i>
+        <input id="su-confirm" class="cc-field__input" type="password" placeholder="Re-enter password" />
+      </div>
+    </div>
+
+    <label style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-secondary);margin-bottom:18px;cursor:pointer;">
+      <input type="checkbox" class="cc-toggle" style="margin-top:2px;flex-shrink:0;" />
+      <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. CryptChat cannot read your messages.</span>
+    </label>
+
+    <button class="cc-btn-primary mb-3" onclick="showView('page-chat')">
+      <i class="bi bi-rocket-takeoff" aria-hidden="true"></i> Create my account
+    </button>
+
+    <p class="cc-auth__footer">
+      Already have an account? <a href="#" onclick="showView('page-login');return false;">Sign in</a>
+    </p>
+
+    <p class="cc-auth__secure">
+      <i class="bi bi-shield-lock" aria-hidden="true"></i>
+      AES-256 &bull; Signal Protocol &bull; No data retention
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: CHAT APP
+═══════════════════════════════════════════════════ -->
+<section id="page-chat" class="cc-page flex-column" style="height:100vh;" aria-label="Chat application">
+
+  <!-- NAVBAR -->
+  <header class="cc-navbar" role="banner">
+    <div class="cc-navbar__brand">
+      <!-- Mobile: sidebar toggle -->
+      <button class="cc-icon-btn d-md-none me-1" id="sidebarToggle" aria-label="Toggle sidebar" style="border:none;background:var(--bg-elevated);">
+        <i class="bi bi-layout-sidebar" aria-hidden="true"></i>
+      </button>
+      <div class="cc-navbar__logo" role="img" aria-label="CryptChat logo">
+        <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+      </div>
+      <span class="cc-title">CryptChat</span>
+      <span class="cc-badge cc-badge--green ms-2" style="font-size:9px;letter-spacing:.5px;">SECURE</span>
+    </div>
+
+    <div class="cc-navbar__actions">
+      <button class="cc-navbar__btn" aria-label="Search" title="Search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+      </button>
+      <button class="cc-navbar__btn" aria-label="Notifications" title="Notifications" style="position:relative;">
+        <i class="bi bi-bell" aria-hidden="true"></i>
+        <span class="cc-badge cc-badge--red" style="position:absolute;top:-4px;right:-4px;font-size:8px;min-width:14px;height:14px;" aria-label="3 unread notifications">3</span>
+      </button>
+      <button class="cc-navbar__btn" aria-label="New chat" title="New encrypted chat">
+        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+      </button>
+      <div class="cc-navbar__avatar" role="button" aria-label="Your profile" tabindex="0" onclick="toggleModal()">AC</div>
+    </div>
+  </header>
+
+  <!-- LAYOUT: SIDEBAR + MAIN -->
+  <div class="cc-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="cc-sidebar" id="sidebar" aria-label="Contacts list">
+
+      <div class="cc-sidebar__header">
+        <p class="cc-sidebar__title">Chats</p>
+        <div class="cc-search">
+          <i class="bi bi-search cc-search__icon" aria-hidden="true"></i>
+          <input class="cc-search__input" type="search" placeholder="Search contacts…" aria-label="Search contacts" />
+        </div>
+      </div>
+
+      <nav class="cc-contacts" role="list" aria-label="Contact list">
+
+        <!-- Contact items -->
+        <div class="cc-contact active" role="listitem" tabindex="0" aria-current="true" aria-label="Chat with Zara Hassan">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-1" aria-hidden="true">ZH</div>
+            <span class="cc-avatar__status online" aria-label="Online"></span>
+          </div>
+          <div class="cc-contact__info">
+            <p class="cc-contact__name">Zara Hassan</p>
+            <p class="cc-contact__preview">
+              <i class="bi bi-lock-fill lock-icon" aria-hidden="true"></i>
+              Encrypted message sent
+            </p>
+          </div>
+          <div class="cc-contact__meta">
+            <span class="cc-contact__time">2:31 pm</span>
+            <span class="cc-badge cc-badge--cyan" aria-label="3 unread messages">3</span>
+          </div>
+        </div>
+
+        <div class="cc-contact" role="listitem" tabindex="0" aria-label="Chat with Marcus Webb">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-2" aria-hidden="true">MW</div>
+            <span class="cc-avatar__status away" aria-label="Away"></span>
+          </div>
+          <div class="cc-contact__info">
+            <p class="cc-contact__name">Marcus Webb</p>
+            <p class="cc-contact__preview">
+              <i class="bi bi-lock-fill lock-icon" aria-hidden="true"></i>
+              Key exchanged successfully
+            </p>
+          </div>
+          <div class="cc-contact__meta">
+            <span class="cc-contact__time">1:14 pm</span>
+          </div>
+        </div>
+
+        <div class="cc-contact" role="listitem" tabindex="0" aria-label="Chat with Keiko Tanaka">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-3" aria-hidden="true">KT</div>
+            <span class="cc-avatar__status online" aria-label="Online"></span>
+          </div>
+          <div class="cc-contact__info">
+            <p class="cc-contact__name">Keiko Tanaka</p>
+            <p class="cc-contact__preview">
+              <i class="bi bi-lock-fill lock-icon" aria-hidden="true"></i>
+              Shared a file
+            </p>
+          </div>
+          <div class="cc-contact__meta">
+            <span class="cc-contact__time">12:52 pm</span>
+            <span class="cc-badge cc-badge--cyan" aria-label="1 unread message">1</span>
+          </div>
+        </div>
+
+        <div class="cc-contact" role="listitem" tabindex="0" aria-label="Chat with Dev Team">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-4" aria-hidden="true">DT</div>
+            <span class="cc-avatar__status online" aria-label="Online"></span>
+          </div>
+          <div class="cc-contact__info">
+            <p class="cc-contact__name">Dev Team 🔐</p>
+            <p class="cc-contact__preview">
+              <i class="bi bi-lock-fill lock-icon" aria-hidden="true"></i>
+              Ryo: Ship it tonight
+            </p>
+          </div>
+          <div class="cc-contact__meta">
+            <span class="cc-contact__time">11:08 am</span>
+          </div>
+        </div>
+
+        <div class="cc-contact" role="listitem" tabindex="0" aria-label="Chat with Lena Kovacs">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-5" aria-hidden="true">LK</div>
+            <span class="cc-avatar__status offline" aria-label="Offline"></span>
+          </div>
+          <div class="cc-contact__info">
+            <p class="cc-contact__name">Lena Kovacs</p>
+            <p class="cc-contact__preview">
+              <i class="bi bi-lock-fill lock-icon" aria-hidden="true"></i>
+              See you tomorrow
+            </p>
+          </div>
+          <div class="cc-contact__meta">
+            <span class="cc-contact__time">Yesterday</span>
+          </div>
+        </div>
+
+      </nav>
+
+      <div class="cc-sidebar__footer" aria-label="Your profile">
+        <div class="cc-avatar">
+          <div class="cc-avatar__circle av-2" style="width:36px;height:36px;font-size:12px;" aria-hidden="true">AC</div>
+          <span class="cc-avatar__status online" aria-label="You are online"></span>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p class="cc-sidebar__user-name">Alex Cipher</p>
+          <p class="cc-sidebar__user-status">Online &bull; Encrypted</p>
+        </div>
+        <button class="cc-icon-btn" aria-label="Settings" style="flex-shrink:0;" onclick="toggleModal()">
+          <i class="bi bi-gear" aria-hidden="true"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CHAT -->
+    <main class="cc-main" role="main" aria-label="Chat with Zara Hassan">
+
+      <!-- Chat Header -->
+      <div class="cc-chat-header">
+        <div class="cc-chat-header__identity">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-1" style="width:38px;height:38px;font-size:12px;" aria-hidden="true">ZH</div>
+            <span class="cc-avatar__status online" aria-label="Zara is online"></span>
+          </div>
+          <div>
+            <p class="cc-chat-header__name">Zara Hassan</p>
+            <p class="cc-chat-header__status online">Online now</p>
+          </div>
+          <div class="cc-enc-badge ms-3" role="status" aria-label="End-to-end encrypted">
+            <i class="bi bi-shield-lock-fill" aria-hidden="true"></i> E2E Encrypted
+          </div>
+        </div>
+        <div class="cc-chat-header__actions">
+          <button class="cc-icon-btn" aria-label="Voice call"><i class="bi bi-telephone" aria-hidden="true"></i></button>
+          <button class="cc-icon-btn" aria-label="Video call"><i class="bi bi-camera-video" aria-hidden="true"></i></button>
+          <button class="cc-icon-btn" aria-label="Search in chat"><i class="bi bi-search" aria-hidden="true"></i></button>
+          <button class="cc-icon-btn" aria-label="More options"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="cc-messages" id="messagesContainer" role="log" aria-label="Message history" aria-live="polite">
+
+        <div class="cc-date-sep" role="separator">
+          <span class="cc-date-sep__label">Today</span>
+        </div>
+
+        <!-- Incoming -->
+        <div class="cc-msg cc-msg--in" role="article" aria-label="Message from Zara Hassan">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-1" style="width:28px;height:28px;font-size:9px;" aria-hidden="true">ZH</div>
+          </div>
+          <div>
+            <div class="cc-msg__bubble">
+              Hey! Did you get the encrypted file I sent?
+            </div>
+            <div class="cc-msg__meta">
+              <span class="cc-msg__time">2:28 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outgoing -->
+        <div class="cc-msg cc-msg--out" role="article" aria-label="Your message">
+          <div>
+            <div class="cc-msg__bubble">
+              Yes! Just decrypted it — looks perfect. The key exchange worked flawlessly 🔐
+            </div>
+            <div class="cc-msg__meta" style="justify-content:flex-end;">
+              <span class="cc-msg__time">2:29 PM</span>
+              <span class="cc-msg__ticks read" aria-label="Read"><i class="bi bi-check2-all" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Incoming -->
+        <div class="cc-msg cc-msg--in" role="article" aria-label="Message from Zara Hassan">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-1" style="width:28px;height:28px;font-size:9px;" aria-hidden="true">ZH</div>
+          </div>
+          <div>
+            <div class="cc-msg__bubble">
+              Amazing! I love how the AES-256 layer adds that extra protection. Nobody can intercept this 🛡️
+            </div>
+            <div class="cc-msg__meta">
+              <span class="cc-msg__time">2:30 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outgoing multi-line -->
+        <div class="cc-msg cc-msg--out" role="article" aria-label="Your message">
+          <div>
+            <div class="cc-msg__bubble">
+              Agreed. And since the private keys never leave our devices, even CryptChat can't read our messages. That's the whole point of the Signal Protocol implementation.
+            </div>
+            <div class="cc-msg__meta" style="justify-content:flex-end;">
+              <span class="cc-msg__time">2:31 PM</span>
+              <span class="cc-msg__ticks read" aria-label="Read"><i class="bi bi-check2-all" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Incoming short -->
+        <div class="cc-msg cc-msg--in" role="article" aria-label="Message from Zara Hassan">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-1" style="width:28px;height:28px;font-size:9px;" aria-hidden="true">ZH</div>
+          </div>
+          <div>
+            <div class="cc-msg__bubble">
+              Exactly. Zero knowledge architecture ✅
+            </div>
+            <div class="cc-msg__meta">
+              <span class="cc-msg__time">2:31 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="cc-typing" id="typingIndicator" role="status" aria-label="Zara Hassan is typing">
+          <div class="cc-avatar">
+            <div class="cc-avatar__circle av-1" style="width:28px;height:28px;font-size:9px;" aria-hidden="true">ZH</div>
+          </div>
+          <div class="cc-typing__dots" aria-hidden="true">
+            <div class="cc-typing__dot"></div>
+            <div class="cc-typing__dot"></div>
+            <div class="cc-typing__dot"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input Area -->
+      <div class="cc-input-area">
+        <div class="cc-input-row">
+          <div class="cc-input-wrap">
+            <button class="cc-input-wrap__icon" aria-label="Add attachment">
+              <i class="bi bi-paperclip" aria-hidden="true"></i>
+            </button>
+            <textarea
+              class="cc-input-wrap__field"
+              id="messageInput"
+              placeholder="Type an encrypted message…"
+              rows="1"
+              aria-label="Message input"
+              onkeydown="handleKey(event)"
+              oninput="autoResize(this)"
+            ></textarea>
+            <button class="cc-input-wrap__icon" aria-label="Add emoji">
+              <i class="bi bi-emoji-smile" aria-hidden="true"></i>
+            </button>
+            <button class="cc-input-wrap__icon" aria-label="Record voice message">
+              <i class="bi bi-mic" aria-hidden="true"></i>
+            </button>
+          </div>
+          <button class="cc-send-btn" aria-label="Send encrypted message" onclick="sendMessage()">
+            <i class="bi bi-send-fill" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="cc-enc-notice" aria-label="Messages are end-to-end encrypted">
+          <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+          Messages are end-to-end encrypted with AES-256 &amp; Signal Protocol
+        </p>
+      </div>
+
+    </main>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PROFILE SETTINGS MODAL
+═══════════════════════════════════════════════════ -->
+<div class="cc-modal-backdrop" id="profileModal" style="display:none;" role="dialog" aria-modal="true" aria-label="Profile settings">
+  <div class="cc-modal">
+    <div class="cc-modal__header">
+      <h2 class="cc-modal__title">
+        <i class="bi bi-person-gear" aria-hidden="true"></i> Profile Settings
+      </h2>
+      <button class="cc-modal__close" aria-label="Close" onclick="toggleModal()">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="cc-modal__tabs" role="tablist">
+      <div class="cc-modal__tab active" role="tab" aria-selected="true">Profile</div>
+      <div class="cc-modal__tab"        role="tab" aria-selected="false">Security</div>
+      <div class="cc-modal__tab"        role="tab" aria-selected="false">Privacy</div>
+      <div class="cc-modal__tab"        role="tab" aria-selected="false">Notifications</div>
+    </div>
+
+    <div class="cc-modal__body">
+
+      <div class="cc-profile-avatar">
+        <div class="cc-profile-avatar__circle av-2" role="button" aria-label="Change profile photo" tabindex="0">AC</div>
+        <p style="font-size:12px;color:var(--text-muted);">Click to change photo</p>
+      </div>
+
+      <div class="cc-field">
+        <label class="cc-field__label" for="m-display">Display name</label>
+        <div class="cc-field__wrap">
+          <i class="bi bi-person cc-field__icon" aria-hidden="true"></i>
+          <input id="m-display" class="cc-field__input" type="text" value="Alex Cipher" />
+        </div>
+      </div>
+
+      <div class="cc-field">
+        <label class="cc-field__label" for="m-bio">Bio</label>
+        <div class="cc-field__wrap">
+          <i class="bi bi-chat-quote cc-field__icon" style="top:14px;transform:none;" aria-hidden="true"></i>
+          <textarea id="m-bio" class="cc-field__input" style="height:auto;padding-top:10px;resize:none;" rows="2" placeholder="Tell people a bit about yourself…">Privacy-first. Nothing to hide, but everything to protect.</textarea>
+        </div>
+      </div>
+
+      <div class="cc-hr"></div>
+
+      <label style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Read receipts</p>
+          <p style="font-size:11px;color:var(--text-muted);">Let others see when you've read their messages</p>
+        </div>
+        <input type="checkbox" class="cc-toggle" checked />
+      </label>
+
+      <label style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Disappearing messages</p>
+          <p style="font-size:11px;color:var(--text-muted);">Auto-delete messages after 7 days</p>
+        </div>
+        <input type="checkbox" class="cc-toggle" />
+      </label>
+
+    </div>
+
+    <div class="cc-modal__footer">
+      <button class="cc-btn-ghost" onclick="toggleModal()">Cancel</button>
+      <button class="cc-btn-primary" onclick="toggleModal()">
+        <i class="bi bi-check-lg" aria-hidden="true"></i> Save changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     NOTIFICATION TOAST
+═══════════════════════════════════════════════════ -->
+<div class="cc-toast" id="toastEl" style="display:none;" role="alert" aria-live="assertive">
+  <div class="cc-toast__icon" aria-hidden="true">
+    <i class="bi bi-shield-check"></i>
+  </div>
+  <div>
+    <p class="cc-toast__title">New encrypted message</p>
+    <p class="cc-toast__body">Zara Hassan sent you a secure message</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     LOADING SPINNER (shown briefly on demo load)
+═══════════════════════════════════════════════════ -->
+<div class="cc-loader" id="loader" role="status" aria-label="Loading CryptChat">
+  <div class="cc-spinner"></div>
+  <p class="cc-loader__text">Establishing encrypted connection…</p>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ─── Loader ─────────────────────────── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const l = document.getElementById('loader');
+    l.style.opacity = '0';
+    l.style.transition = 'opacity 0.4s ease';
+    setTimeout(() => l.style.display = 'none', 400);
+  }, 1200);
+});
+
+/* ─── View Switcher ──────────────────── */
+function showView(id) {
+  document.querySelectorAll('.cc-page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.demo-nav__btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === id);
+  });
+}
+
+document.querySelectorAll('.demo-nav__btn').forEach(btn => {
+  btn.addEventListener('click', () => showView(btn.dataset.view));
+});
+
+/* ─── Modal ──────────────────────────── */
+function toggleModal() {
+  const m = document.getElementById('profileModal');
+  const isHidden = m.style.display === 'none' || !m.style.display;
+  m.style.display = isHidden ? 'flex' : 'none';
+}
+document.getElementById('profileModal').addEventListener('click', function(e) {
+  if (e.target === this) toggleModal();
+});
+
+/* ─── Sidebar Mobile Toggle ──────────── */
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar = document.getElementById('sidebar');
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+}
+
+/* ─── Send Message ───────────────────── */
+function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const container = document.getElementById('messagesContainer');
+  const typing = document.getElementById('typingIndicator');
+
+  const msg = document.createElement('div');
+  msg.className = 'cc-msg cc-msg--out';
+  msg.setAttribute('role', 'article');
+  msg.setAttribute('aria-label', 'Your message');
+  msg.innerHTML = `
+    <div>
+      <div class="cc-msg__bubble">${escapeHtml(text)}</div>
+      <div class="cc-msg__meta" style="justify-content:flex-end;">
+        <span class="cc-msg__time">${getTime()}</span>
+        <span class="cc-msg__ticks" aria-label="Sent"><i class="bi bi-check2" aria-hidden="true"></i></span>
+      </div>
+    </div>`;
+
+  container.insertBefore(msg, typing);
+  input.value = '';
+  input.style.height = 'auto';
+  container.scrollTop = container.scrollHeight;
+
+  // Simulate read receipt
+  setTimeout(() => {
+    const ticks = msg.querySelector('.cc-msg__ticks');
+    ticks.className = 'cc-msg__ticks read';
+    ticks.setAttribute('aria-label', 'Read');
+    ticks.innerHTML = '<i class="bi bi-check2-all" aria-hidden="true"></i>';
+  }, 1800);
+
+  showToast();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getTime() {
+  return new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+
+/* ─── Toast ──────────────────────────── */
+function showToast() {
+  const t = document.getElementById('toastEl');
+  t.style.display = 'flex';
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transition = 'opacity 0.4s ease';
+    setTimeout(() => { t.style.display = 'none'; t.style.opacity = '1'; }, 400);
+  }, 3500);
+}
+
+/* ─── Password Toggle ────────────────── */
+function togglePass(id, btn) {
+  const input = document.getElementById(id);
+  const isPass = input.type === 'password';
+  input.type = isPass ? 'text' : 'password';
+  btn.querySelector('i').className = isPass ? 'bi bi-eye-slash' : 'bi bi-eye';
+}
+
+/* ─── Password Strength ──────────────── */
+document.getElementById('su-pass') && document.getElementById('su-pass').addEventListener('input', function() {
+  const v = this.value;
+  let score = 0;
+  if (v.length >= 8)  score++;
+  if (v.length >= 12) score++;
+  if (/[A-Z]/.test(v) && /[0-9]/.test(v)) score++;
+  if (/[^a-zA-Z0-9]/.test(v)) score++;
+
+  const colors = ['#f43f5e','#f59e0b','#4f8ef7','#10d9a0'];
+  const labels = ['Weak','Fair','Strong','Very strong'];
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('str-' + i);
+    if (el) el.style.background = i <= score ? colors[score - 1] : 'var(--border-dim)';
+  }
+  const lb = document.getElementById('str-label');
+  if (lb) lb.textContent = v ? labels[score - 1] || 'Weak' : 'Password strength';
+});
+
+/* ─── Modal Tabs ─────────────────────── */
+document.querySelectorAll('.cc-modal__tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.cc-modal__tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    this.classList.add('active');
+    this.setAttribute('aria-selected', 'true');
+  });
+});
+
+/* ─── Contact Click ──────────────────── */
+document.querySelectorAll('.cc-contact').forEach(c => {
+  c.addEventListener('click', function() {
+    document.querySelectorAll('.cc-contact').forEach(x => {
+      x.classList.remove('active');
+      x.removeAttribute('aria-current');
+    });
+    this.classList.add('active');
+    this.setAttribute('aria-current', 'true');
+    if (window.innerWidth <= 640) sidebar.classList.remove('open');
+  });
+});
+
+/* ─── Particle Canvas ────────────────── */
+(function() {
+  const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const count = Math.min(55, Math.floor(W * H / 18000));
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      r:  Math.random() * 1.5 + 0.4,
+      a:  Math.random() * 0.35 + 0.05,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,229,255,${p.a})`;
+      ctx.fill();
+    }
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,229,255,${0.06 * (1 - dist/120)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── Auto-scroll messages on load ───── */
+setTimeout(() => {
+  const c = document.getElementById('messagesContainer');
+  if (c) c.scrollTop = c.scrollHeight;
+}, 100);
+</script>
+</body>
+</html>
