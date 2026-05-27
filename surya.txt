@@ -1,0 +1,18 @@
+D:\244323>git commit -m "new file adding"
+[main bb06f0a] new file adding
+ 3 files changed, 2615 insertions(+)
+ create mode 100644 cryptchat.zip
+ create mode 100644 cryptchat/cryptchat-demo.html
+ create mode 100644 cryptchat/cryptchat.css
+
+D:\244323>git push -u origin main
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 6 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 30.04 KiB | 7.51 MiB/s, done.
+Total 6 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/durgasuryaprakashsunkara-dotcom/projects-list.git
+   3fb6951..bb06f0a  main -> main
+branch 'main' set up to track 'origin/main'.
