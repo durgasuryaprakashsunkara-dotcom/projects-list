@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register as Plumber | PlumberPro</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/plumber-service.css">
+</head>
+<body>
+
+<nav class="navbar navbar-custom navbar-expand-lg" id="mainNavbar">
+  <div class="container">
+    <a class="navbar-brand-custom" href="index.html">
+      <div class="logo-icon"><i class="fas fa-wrench"></i></div>
+      <span class="logo-text-main">Plumber</span><span class="logo-text-accent">Pro</span>
+    </a>
+    <button class="navbar-toggler-custom d-lg-none" id="navToggler" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto navbar-nav-custom align-items-lg-center">
+        <li class="nav-item"><a class="nav-link-custom" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link-custom" href="plumbers.html">Find Plumber</a></li>
+        <li class="nav-item"><a class="nav-link-custom active" href="register-plumber.html">Register as Plumber</a></li>
+        <li class="nav-item"><a class="nav-link-custom" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link-custom" href="contact.html">Contact</a></li>
+        <li class="nav-item"><a class="nav-link-custom nav-btn-login" href="login.html"><i class="fas fa-sign-in-alt me-1"></i>Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="breadcrumb-section">
+  <div class="container">
+    <h1 class="breadcrumb-title">Register as Plumber</h1>
+    <nav class="breadcrumb-custom">
+      <div class="item"><a href="index.html">Home</a></div>
+      <div class="separator"><i class="fas fa-chevron-right"></i></div>
+      <div class="item active">Register</div>
+    </nav>
+  </div>
+</section>
+
+<section class="registration-section section-padding">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <div class="registration-card">
+
+          <div class="registration-sidebar">
+            <div class="sidebar-title">Join PlumberPro</div>
+            <p class="sidebar-text">Register as a professional plumber and start receiving bookings from customers in your area.</p>
+            <div class="registration-benefits">
+              <div class="benefit-item"><i class="fas fa-users"></i><span>Access thousands of customers</span></div>
+              <div class="benefit-item"><i class="fas fa-rupee-sign"></i><span>Earn more with online bookings</span></div>
+              <div class="benefit-item"><i class="fas fa-shield-alt"></i><span>Verified badge on your profile</span></div>
+              <div class="benefit-item"><i class="fas fa-star"></i><span>Build your reputation with reviews</span></div>
+              <div class="benefit-item"><i class="fas fa-headset"></i><span>24/7 support from our team</span></div>
+            </div>
+          </div>
+
+          <div class="registration-form-area">
+            <h3 class="mb-1" style="font-weight:800;color:var(--text-dark)">Create Your Account</h3>
+            <p class="text-muted mb-5">Fill in the form below. Your profile will be reviewed within 24 hours.</p>
+
+            <form id="regForm" novalidate>
+              <div class="profile-upload-area" onclick="document.getElementById('profileImg').click()">
+                <div class="profile-upload-circle" id="uploadCircle">
+                  <i class="fas fa-camera"></i>
+                  <span>Upload Photo</span>
+                  <img src="" alt="Preview" id="imgPreview">
+                </div>
+                <div class="upload-hint">JPG/PNG, Max 2MB</div>
+                <input type="file" id="profileImg" accept="image/*" style="display:none">
+              </div>
+
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-user"></i> Full Name <span class="required">*</span></label>
+                    <input type="text" name="name" class="form-control-custom" placeholder="Your full name" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-phone-alt"></i> Mobile Number <span class="required">*</span></label>
+                    <input type="tel" name="phone" class="form-control-custom" placeholder="10-digit number" maxlength="10" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-envelope"></i> Email <span class="required">*</span></label>
+                    <input type="email" name="email" class="form-control-custom" placeholder="your@email.com" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-briefcase"></i> Years of Experience <span class="required">*</span></label>
+                    <input type="number" name="experience" class="form-control-custom" placeholder="e.g. 5" min="0" max="50" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-map-marker-alt"></i> Service Area <span class="required">*</span></label>
+                    <input type="text" name="service_area" class="form-control-custom" placeholder="e.g. Vijayawada, Guntur" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-rupee-sign"></i> Service Charge (₹/visit)</label>
+                    <input type="number" name="charge" class="form-control-custom" placeholder="e.g. 500" min="0">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-lock"></i> Password <span class="required">*</span></label>
+                    <input type="password" name="password" id="pw1" class="form-control-custom" placeholder="Min 6 characters" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-custom">
+                    <label class="form-label-custom"><i class="fas fa-lock"></i> Confirm Password <span class="required">*</span></label>
+                    <input type="password" name="confirm" id="pw2" class="form-control-custom" placeholder="Re-enter password" required>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary-custom btn-block btn-lg"><i class="fas fa-user-plus"></i> Register as Plumber</button>
+                  <p class="text-center mt-3 text-muted" style="font-size:.875rem">Already have an account? <a href="login.html" style="color:var(--primary);font-weight:600">Login here</a></p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-custom">
+  <div class="container">
+    <div class="footer-bottom">
+      <p class="footer-copyright mb-0">&copy; 2026 <a href="index.html">PlumberPro</a>. All rights reserved.</p>
+      <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('regForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const pw1 = document.getElementById('pw1').value, pw2 = document.getElementById('pw2').value;
+    if (pw1 !== pw2) { PlumberPro.showToast('Passwords do not match.', 'danger'); return; }
+    if (this.checkValidity()) {
+      PlumberPro.showToast('🎉 Registration successful! (Demo — connect to PHP backend to save data)', 'success');
+      this.reset();
+      document.getElementById('imgPreview').classList.remove('loaded');
+    }
+  });
+</script>
+</body>
+</html>

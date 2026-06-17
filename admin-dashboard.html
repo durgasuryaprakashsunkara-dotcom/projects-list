@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | PlumberPro</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/plumber-service.css">
+</head>
+<body style="padding-top:0">
+
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-logo">
+      <div style="width:36px;height:36px;background:var(--accent-gradient);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0"><i class="fas fa-wrench"></i></div>
+      <span class="logo-text">Plumber<span>Pro</span></span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+      <a href="admin-dashboard.html" class="sidebar-nav-item active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+      <a href="#" class="sidebar-nav-item"><i class="fas fa-hard-hat"></i><span>Plumbers</span></a>
+      <a href="#" class="sidebar-nav-item"><i class="fas fa-users"></i><span>Customers</span></a>
+      <a href="#" class="sidebar-nav-item"><i class="fas fa-calendar-check"></i><span>Bookings</span><span class="badge">3</span></a>
+      <div class="sidebar-section-label">Manage</div>
+      <a href="#" class="sidebar-nav-item"><i class="fas fa-tools"></i><span>Services</span></a>
+      <a href="#" class="sidebar-nav-item"><i class="fas fa-envelope"></i><span>Messages</span><span class="badge">5</span></a>
+      <a href="#" class="sidebar-nav-item"><i class="fas fa-star"></i><span>Reviews</span></a>
+      <div class="sidebar-section-label">Account</div>
+      <a href="index.html" class="sidebar-nav-item"><i class="fas fa-globe"></i><span>View Site</span></a>
+      <a href="login.html" class="sidebar-nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </nav>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="topbar-icon-btn" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        <span class="topbar-title">Dashboard</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-icon-btn"><i class="fas fa-bell"></i><span class="badge-dot"></span></button>
+        <div class="admin-user-chip">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">A</div>
+          <span class="name">Super Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <div class="row g-4 mb-5">
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-hard-hat"></i></div>
+            <div class="stat-info"><div class="stat-number">4</div><div class="stat-label">Plumbers</div><span class="stat-change up"><i class="fas fa-arrow-up"></i> Active</span></div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-users"></i></div>
+            <div class="stat-info"><div class="stat-number">1</div><div class="stat-label">Customers</div></div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-calendar-check"></i></div>
+            <div class="stat-info"><div class="stat-number">12</div><div class="stat-label">Bookings</div></div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-clock"></i></div>
+            <div class="stat-info"><div class="stat-number">3</div><div class="stat-label">Pending</div><span class="stat-change down">Needs action</span></div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-envelope"></i></div>
+            <div class="stat-info"><div class="stat-number">5</div><div class="stat-label">Unread Msgs</div></div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+            <div class="stat-info"><div class="stat-number">₹24,500</div><div class="stat-label">Revenue</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-table-card mb-5">
+        <div class="admin-table-header">
+          <span class="admin-table-title">Recent Bookings</span>
+          <a href="#" class="btn btn-primary-custom btn-sm">View All</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table-custom">
+            <thead><tr><th>#ID</th><th>Customer</th><th>Plumber</th><th>Service</th><th>Date</th><th>Charge</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>#101</strong></td><td>Priya Devi</td><td>Rajesh Kumar</td><td>Pipe Repair</td><td>14 Jun 2026</td><td>₹500</td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td><a href="#" class="table-action-btn view"><i class="fas fa-eye"></i></a> <a href="#" class="table-action-btn delete"><i class="fas fa-trash"></i></a></td>
+              </tr>
+              <tr>
+                <td><strong>#102</strong></td><td>Kiran Reddy</td><td>Venkat Rao</td><td>Drain Cleaning</td><td>15 Jun 2026</td><td>₹600</td>
+                <td><span class="status-badge pending">Pending</span></td>
+                <td><a href="#" class="table-action-btn view"><i class="fas fa-eye"></i></a> <a href="#" class="table-action-btn delete"><i class="fas fa-trash"></i></a></td>
+              </tr>
+              <tr>
+                <td><strong>#103</strong></td><td>Madhavi Latha</td><td>Suresh Babu</td><td>Water Heater</td><td>16 Jun 2026</td><td>₹400</td>
+                <td><span class="status-badge active">Confirmed</span></td>
+                <td><a href="#" class="table-action-btn view"><i class="fas fa-eye"></i></a> <a href="#" class="table-action-btn delete"><i class="fas fa-trash"></i></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-table-card">
+        <div class="admin-table-header">
+          <span class="admin-table-title">Recently Registered Plumbers</span>
+          <a href="#" class="btn btn-primary-custom btn-sm">View All</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table-custom">
+            <thead><tr><th>Name</th><th>Phone</th><th>Area</th><th>Experience</th><th>Rating</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="table-avatar"><div style="width:36px;height:36px;border-radius:50%;background:var(--primary-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem">R</div><div><div class="name">Rajesh Kumar</div><div class="email">rajesh@example.com</div></div></div></td>
+                <td>9876543210</td><td>Vijayawada</td><td>8 yrs</td><td>4.8 ★</td>
+                <td><span class="status-badge active">Active</span></td>
+                <td><a href="#" class="table-action-btn view"><i class="fas fa-eye"></i></a> <a href="#" class="table-action-btn edit"><i class="fas fa-edit"></i></a> <a href="#" class="table-action-btn delete"><i class="fas fa-trash"></i></a></td>
+              </tr>
+              <tr>
+                <td><div class="table-avatar"><div style="width:36px;height:36px;border-radius:50%;background:var(--accent-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem">S</div><div><div class="name">Suresh Babu</div><div class="email">suresh@example.com</div></div></div></td>
+                <td>9876543211</td><td>Guntur</td><td>5 yrs</td><td>4.5 ★</td>
+                <td><span class="status-badge active">Active</span></td>
+                <td><a href="#" class="table-action-btn view"><i class="fas fa-eye"></i></a> <a href="#" class="table-action-btn edit"><i class="fas fa-edit"></i></a> <a href="#" class="table-action-btn delete"><i class="fas fa-trash"></i></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-custom">
+          <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('sidebarToggle').addEventListener('click', () => {
+    document.getElementById('adminSidebar').classList.toggle('collapsed');
+  });
+</script>
+</body>
+</html>
